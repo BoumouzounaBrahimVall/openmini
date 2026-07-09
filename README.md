@@ -1,5 +1,12 @@
 # OpenMini
 
+<p>
+  <a href="https://github.com/BoumouzounaBrahimVall/openmini/actions/workflows/ci.yml"><img src="https://github.com/BoumouzounaBrahimVall/openmini/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://www.npmjs.com/package/@openmini/react-native"><img src="https://img.shields.io/npm/v/%40openmini%2Freact-native?label=npm" alt="npm version" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="License: Apache-2.0" /></a>
+  <a href="https://deepwiki.com/BoumouzounaBrahimVall/openmini"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki" /></a>
+</p>
+
 > **Portals, but open-source — and your registry is an S3 bucket.**
 
 OpenMini is a self-hosted mini-app runtime for React Native. Ship plain-React
