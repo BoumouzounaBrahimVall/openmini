@@ -100,12 +100,12 @@ model with every claim traced to its test; isolation and signing are on the
 
 ## Packages
 
-| Package                                                     | What it is                                                             |
-| ----------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [`@openmini/runtime`](packages/runtime/README.md)           | Mini-app SDK: the typed `mini.*` bridge client (zero deps)             |
-| [`@openmini/cli`](packages/cli/README.md)                   | `mini create / dev / build / pack / publish / inspect`                 |
-| [`@openmini/react-native`](packages/react-native/README.md) | Host SDK: `<MiniAppProvider>` + `<MiniAppView>`, resolver, bridge host |
-| [`conformance/`](conformance)                               | Golden bridge fixtures — any host implementation must pass them        |
+| Package                                                                          | What it is                                                                                                       |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| [`@openmini/runtime`](https://www.npmjs.com/package/@openmini/runtime)           | Mini-app SDK: the typed `mini.*` bridge client (zero deps) · [docs](packages/runtime/README.md)                  |
+| [`@openmini/cli`](https://www.npmjs.com/package/@openmini/cli)                   | `mini create / dev / build / pack / publish / inspect` · [docs](packages/cli/README.md)                          |
+| [`@openmini/react-native`](https://www.npmjs.com/package/@openmini/react-native) | Host SDK: `<MiniAppProvider>` + `<MiniAppView>`, resolver, bridge host · [docs](packages/react-native/README.md) |
+| [`conformance/`](conformance)                                                    | Golden bridge fixtures — any host implementation must pass them                                                  |
 
 ## Status
 
