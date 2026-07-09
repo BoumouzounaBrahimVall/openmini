@@ -1,0 +1,15 @@
+{
+  "name": "navigation.close",
+  "manifest": { "permissions": [], "allowedDomains": [] },
+  "tests": [
+    {
+      "name": "close resolves with null and needs no permission",
+      "steps": [
+        {
+          "call": { "api": "navigation.close", "payload": {} },
+          "expect": { "ok": true, "result": null }
+        }
+      ]
+    }
+  ]
+}

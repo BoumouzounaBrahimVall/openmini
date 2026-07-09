@@ -1,0 +1,21 @@
+{
+  "name": "@openmini-examples/todo",
+  "private": true,
+  "version": "0.1.1",
+  "type": "module",
+  "scripts": {
+    "dev": "mini dev",
+    "pack": "mini pack"
+  },
+  "dependencies": {
+    "@openmini/runtime": "workspace:*",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@openmini/cli": "workspace:*",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.8.0"
+  }
+}

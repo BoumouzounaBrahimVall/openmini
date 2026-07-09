@@ -1,0 +1,27 @@
+{
+  "name": "host events",
+  "manifest": { "permissions": [], "allowedDomains": [] },
+  "tests": [
+    {
+      "name": "app.show reaches the mini-app",
+      "steps": [
+        { "triggerEvent": "app.show", "expectEvent": { "event": "app.show" } }
+      ]
+    },
+    {
+      "name": "app.hide reaches the mini-app",
+      "steps": [
+        { "triggerEvent": "app.hide", "expectEvent": { "event": "app.hide" } }
+      ]
+    },
+    {
+      "name": "app.destroy reaches the mini-app",
+      "steps": [
+        {
+          "triggerEvent": "app.destroy",
+          "expectEvent": { "event": "app.destroy" }
+        }
+      ]
+    }
+  ]
+}

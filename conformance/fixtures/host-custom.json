@@ -1,0 +1,47 @@
+{
+  "name": "host custom apis",
+  "manifest": { "permissions": ["host:conformanceEcho"], "allowedDomains": [] },
+  "tests": [
+    {
+      "name": "registered custom api round-trips its payload verbatim",
+      "requires": ["customApis"],
+      "steps": [
+        {
+          "call": {
+            "api": "host.conformanceEcho",
+            "payload": { "user": "u1", "nested": { "n": 2 } }
+          },
+          "expect": {
+            "ok": true,
+            "result": { "user": "u1", "nested": { "n": 2 } }
+          }
+        }
+      ]
+    },
+    {
+      "name": "declared but unregistered host api is API_NOT_FOUND",
+      "requires": ["customApis"],
+      "manifest": {
+        "permissions": ["host:notRegistered"],
+        "allowedDomains": []
+      },
+      "steps": [
+        {
+          "call": { "api": "host.notRegistered", "payload": {} },
+          "expect": { "ok": false, "errorCode": "API_NOT_FOUND" }
+        }
+      ]
+    },
+    {
+      "name": "undeclared host permission is denied before registration lookup",
+      "requires": ["customApis"],
+      "manifest": { "permissions": [], "allowedDomains": [] },
+      "steps": [
+        {
+          "call": { "api": "host.conformanceEcho", "payload": {} },
+          "expect": { "ok": false, "errorCode": "PERMISSION_DENIED" }
+        }
+      ]
+    }
+  ]
+}

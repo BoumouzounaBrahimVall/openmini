@@ -1,0 +1,36 @@
+{
+  "name": "system.getInfo",
+  "manifest": { "permissions": [], "allowedDomains": [] },
+  "tests": [
+    {
+      "name": "returns the SystemInfo shape with no permissions required",
+      "steps": [
+        {
+          "call": { "api": "system.getInfo", "payload": {} },
+          "expect": {
+            "ok": true,
+            "result": {
+              "platform": { "$enum": ["ios", "android", "web"] },
+              "osVersion": { "$type": "string" },
+              "hostSdkVersion": { "$type": "string" },
+              "bridgeVersion": { "$enum": [1] },
+              "locale": { "$type": "string" },
+              "theme": { "$enum": ["light", "dark"] },
+              "screen": {
+                "width": { "$type": "number" },
+                "height": { "$type": "number" },
+                "scale": { "$type": "number" }
+              },
+              "safeArea": {
+                "top": { "$type": "number" },
+                "right": { "$type": "number" },
+                "bottom": { "$type": "number" },
+                "left": { "$type": "number" }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

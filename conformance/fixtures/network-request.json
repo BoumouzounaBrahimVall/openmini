@@ -1,0 +1,87 @@
+{
+  "name": "network.request",
+  "manifest": {
+    "permissions": ["network"],
+    "allowedDomains": ["{{ALLOWED_ORIGIN}}"]
+  },
+  "tests": [
+    {
+      "name": "GET to an allowed origin succeeds",
+      "steps": [
+        {
+          "call": {
+            "api": "network.request",
+            "payload": { "url": "{{ALLOWED_ORIGIN}}/echo", "method": "GET" }
+          },
+          "expect": {
+            "ok": true,
+            "result": {
+              "status": 200,
+              "headers": { "$any": true },
+              "body": "{\"ok\":true}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "non-2xx HTTP status is still ok:true (HTTP errors are data)",
+      "steps": [
+        {
+          "call": {
+            "api": "network.request",
+            "payload": {
+              "url": "{{ALLOWED_ORIGIN}}/does-not-exist",
+              "method": "GET"
+            }
+          },
+          "expect": {
+            "ok": true,
+            "result": {
+              "status": 404,
+              "headers": { "$any": true },
+              "body": { "$type": "string" }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "undeclared origin is NETWORK_DOMAIN_BLOCKED before any I/O",
+      "steps": [
+        {
+          "call": {
+            "api": "network.request",
+            "payload": { "url": "{{BLOCKED_ORIGIN}}/echo", "method": "GET" }
+          },
+          "expect": { "ok": false, "errorCode": "NETWORK_DOMAIN_BLOCKED" }
+        }
+      ]
+    },
+    {
+      "name": "missing url is INVALID_PAYLOAD",
+      "steps": [
+        {
+          "call": { "api": "network.request", "payload": {} },
+          "expect": { "ok": false, "errorCode": "INVALID_PAYLOAD" }
+        }
+      ]
+    },
+    {
+      "name": "without network permission is denied",
+      "manifest": {
+        "permissions": [],
+        "allowedDomains": ["{{ALLOWED_ORIGIN}}"]
+      },
+      "steps": [
+        {
+          "call": {
+            "api": "network.request",
+            "payload": { "url": "{{ALLOWED_ORIGIN}}/echo", "method": "GET" }
+          },
+          "expect": { "ok": false, "errorCode": "PERMISSION_DENIED" }
+        }
+      ]
+    }
+  ]
+}

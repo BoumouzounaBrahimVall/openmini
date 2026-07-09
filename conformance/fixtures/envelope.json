@@ -1,0 +1,31 @@
+{
+  "name": "envelope",
+  "manifest": {
+    "permissions": ["storage", "network", "toast"],
+    "allowedDomains": []
+  },
+  "tests": [
+    {
+      "name": "unknown api returns API_NOT_FOUND",
+      "steps": [
+        {
+          "call": { "api": "nope.nothing", "payload": {} },
+          "expect": { "ok": false, "errorCode": "API_NOT_FOUND" }
+        }
+      ]
+    },
+    {
+      "name": "unknown message type is ignored, channel keeps working",
+      "steps": [
+        {
+          "sendRaw": "{\"v\":1,\"type\":\"bogus.type\",\"id\":\"x\"}",
+          "expectNoReply": true
+        },
+        {
+          "call": { "api": "system.getInfo", "payload": {} },
+          "expect": { "ok": true, "result": { "$any": true } }
+        }
+      ]
+    }
+  ]
+}

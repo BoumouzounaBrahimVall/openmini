@@ -1,0 +1,22 @@
+{
+  "registryVersion": 1,
+  "id": "com.example.todo",
+  "name": "Todo",
+  "latest": "0.1.1",
+  "versions": {
+    "0.1.0": {
+      "package": "0.1.0/app.mpkg",
+      "sha256": "bcbea0264d289de959bd488c8a4b3b0e66306de3bff6e462654399520cdf3a4d",
+      "size": 68273,
+      "runtimeVersion": "0.0.0",
+      "publishedAt": "2026-07-09T11:00:43.811Z"
+    },
+    "0.1.1": {
+      "package": "0.1.1/app.mpkg",
+      "sha256": "67ff06b57099676bf314a885a1595ae84dfd69f02759e687db5fa3bf735bc804",
+      "size": 68278,
+      "runtimeVersion": "0.0.0",
+      "publishedAt": "2026-07-09T12:15:36.304Z"
+    }
+  }
+}

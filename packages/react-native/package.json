@@ -1,0 +1,54 @@
+{
+  "name": "@openmini/react-native",
+  "version": "0.0.0",
+  "description": "OpenMini React Native host SDK: WebView runtime, bridge host, package resolver",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./async-storage": {
+      "types": "./dist/adapters/native/async-storage.d.ts",
+      "import": "./dist/adapters/native/async-storage.js"
+    }
+  },
+  "files": [
+    "dist",
+    "android",
+    "ios",
+    "OpenminiReactNative.podspec",
+    "app.plugin.js"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "@openmini/cli": "workspace:*",
+    "@openmini/conformance": "workspace:*",
+    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@types/node": "^22.10.0",
+    "react": "^19.1.0",
+    "react-native": "^0.86.0",
+    "@types/react": "^19.1.0"
+  },
+  "dependencies": {
+    "@openmini/runtime": "workspace:*",
+    "fflate": "^0.8.2",
+    "zod": "^4.1.0"
+  },
+  "peerDependencies": {
+    "@react-native-async-storage/async-storage": ">=1.19",
+    "react": ">=18",
+    "react-native": ">=0.76"
+  },
+  "peerDependenciesMeta": {
+    "@react-native-async-storage/async-storage": {
+      "optional": true
+    }
+  }
+}

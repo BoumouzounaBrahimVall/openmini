@@ -1,0 +1,15 @@
+{
+  "name": "@openmini/conformance",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Golden bridge-protocol fixtures + harness any OpenMini host must pass",
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "@types/node": "^22.10.0"
+  }
+}

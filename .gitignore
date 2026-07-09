@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+apps/playground/ios/build/
+packages/react-native/android/build/
+
+# internal working docs — local only, excluded from public history
+planning/
+STATE.md
+mini-programs-framework-roadmap.md
+CLAUDE.local.md
+
+# local Claude Code config/skills — never publish
+/.claude/

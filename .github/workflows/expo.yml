@@ -1,0 +1,88 @@
+name: Expo
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+# Proves @openmini/react-native survives `expo prebuild` + native compilation
+# on the current Expo SDK. Paths-filtered: iOS runs on macOS
+# runners (10x minutes on private repos), so this only fires when the native
+# module or the Expo playground changes — or on demand.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/react-native/**"
+      - "apps/playground-expo/**"
+      - ".github/workflows/expo.yml"
+  pull_request:
+    paths:
+      - "packages/react-native/**"
+      - "apps/playground-expo/**"
+      - ".github/workflows/expo.yml"
+  workflow_dispatch:
+
+jobs:
+  expo-android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/playground-expo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/playground-expo/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      # AGP's on-demand NDK install flaked with a corrupt download ("Error on
+      # ZipFile unknown archive"); sdkmanager verifies + retries properly.
+      - name: Install Android NDK
+        run: echo y | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;27.1.12297006" > /dev/null
+      - run: npm ci
+      - run: npx expo prebuild --platform android --no-install
+      # single ABI: CI proves compilation/linkage, not device coverage
+      - run: ./gradlew assembleDebug -PreactNativeArchitectures=x86_64
+        working-directory: apps/playground-expo/android
+
+  expo-ios:
+    # macos-15+: RN 0.86 needs Xcode >= 16.1 (macos-14 defaults to 15.4)
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: apps/playground-expo
+    steps:
+      - uses: actions/checkout@v4
+      # Expo SDK 57's precompiled ExpoModulesJSI builds a Swift package that
+      # needs Swift tools 6.2 — newer than the image's default Xcode. Pick
+      # the newest installed Xcode and log the choice for future debugging.
+      - name: Select newest Xcode
+        working-directory: /Applications
+        run: |
+          ls -d Xcode*.app
+          XC=$(ls -d Xcode*.app | sort -V | tail -1)
+          echo "selecting $XC"
+          sudo xcode-select -s "/Applications/$XC"
+          swift --version
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/playground-expo/package-lock.json
+      - uses: actions/cache@v4
+        with:
+          path: |
+            apps/playground-expo/ios/Pods
+            ~/Library/Caches/CocoaPods
+          key: pods-${{ runner.os }}-${{ hashFiles('apps/playground-expo/package-lock.json') }}
+      - run: npm ci
+      - run: npx expo prebuild --platform ios --no-install
+      - run: npx pod-install
+      - run: >
+          xcodebuild -workspace ios/playgroundexpo.xcworkspace
+          -scheme playgroundexpo -configuration Debug
+          -destination "generic/platform=iOS Simulator"
+          CODE_SIGNING_ALLOWED=NO build

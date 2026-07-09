@@ -1,0 +1,9 @@
+{
+  "manifestVersion": 1,
+  "id": "{{APP_ID}}",
+  "name": "{{APP_NAME}}",
+  "version": "0.1.0",
+  "runtimeVersion": ">=0.0.0",
+  "permissions": ["storage", "toast"],
+  "allowedDomains": []
+}

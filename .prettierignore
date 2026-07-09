@@ -1,0 +1,11 @@
+dist/
+pnpm-lock.yaml
+.claude/
+# native project dirs: gradle/xcode artifacts, nothing prettier should touch
+# (untracked build output otherwise breaks local format:check vs CI)
+apps/playground/android/
+apps/playground/ios/
+packages/react-native/android/build/
+apps/playground-expo/android/
+apps/playground-expo/ios/
+apps/playground-expo/.expo/

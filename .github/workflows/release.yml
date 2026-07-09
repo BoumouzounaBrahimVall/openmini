@@ -1,0 +1,50 @@
+name: Release
+# Tag-triggered npm publish (user decision 2026-07-09): push a
+# v* tag and CI re-verifies everything, stamps versions from the tag, and
+# publishes with npm provenance (tarball cryptographically linked to this
+# repo+commit+run). Never publish from a laptop.
+#
+# One-time setup before the first tag:
+#   1. Create the npm org for the @openmini scope (npmjs.com -> Add Organization).
+#   2. Create a granular npm token with publish rights for @openmini/*.
+#   3. `gh secret set NPM_TOKEN` with that token.
+# After v0.1 exists, consider switching to npm Trusted Publishing (OIDC,
+# tokenless) in each package's npm settings.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+  id-token: write # npm provenance attestation
+
+concurrency:
+  group: release
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm test
+      - run: pnpm lint
+      - run: pnpm format:check
+      - name: Stamp versions from tag
+        run: |
+          V=${GITHUB_REF_NAME#v}
+          echo "publishing version $V"
+          for p in packages/runtime packages/cli packages/react-native; do
+            (cd "$p" && npm version "$V" --no-git-tag-version)
+          done
+      - name: Publish to npm with provenance
+        run: pnpm -r --filter "./packages/*" publish --access public --provenance --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,46 @@
+{
+  "name": "ui.showToast",
+  "manifest": { "permissions": ["toast"], "allowedDomains": [] },
+  "tests": [
+    {
+      "name": "shows a toast",
+      "steps": [
+        {
+          "call": { "api": "ui.showToast", "payload": { "message": "hi" } },
+          "expect": { "ok": true, "result": null }
+        }
+      ]
+    },
+    {
+      "name": "accepts optional durationMs",
+      "steps": [
+        {
+          "call": {
+            "api": "ui.showToast",
+            "payload": { "message": "hi", "durationMs": 1500 }
+          },
+          "expect": { "ok": true, "result": null }
+        }
+      ]
+    },
+    {
+      "name": "missing message is INVALID_PAYLOAD",
+      "steps": [
+        {
+          "call": { "api": "ui.showToast", "payload": {} },
+          "expect": { "ok": false, "errorCode": "INVALID_PAYLOAD" }
+        }
+      ]
+    },
+    {
+      "name": "without toast permission is denied",
+      "manifest": { "permissions": [], "allowedDomains": [] },
+      "steps": [
+        {
+          "call": { "api": "ui.showToast", "payload": { "message": "hi" } },
+          "expect": { "ok": false, "errorCode": "PERMISSION_DENIED" }
+        }
+      ]
+    }
+  ]
+}

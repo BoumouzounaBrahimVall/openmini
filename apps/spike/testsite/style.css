@@ -1,0 +1,24 @@
+body {
+  --spike-css: loaded;
+  font-family: -apple-system, Roboto, sans-serif;
+  background: #f5f7fb;
+  padding: 24px;
+}
+li {
+  font-size: 18px;
+  margin: 10px 0;
+  list-style: none;
+}
+.pass {
+  color: #0a7d24;
+  font-weight: 700;
+}
+.fail {
+  color: #c1121f;
+  font-weight: 700;
+}
+#origin {
+  color: #555;
+  font-size: 13px;
+  word-break: break-all;
+}

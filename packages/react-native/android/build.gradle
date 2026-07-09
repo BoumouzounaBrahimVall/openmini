@@ -1,0 +1,32 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+def safeExt(name, fallback) {
+  rootProject.ext.has(name) ? rootProject.ext.get(name) : fallback
+}
+
+android {
+  namespace "com.openmini.reactnative"
+  compileSdkVersion safeExt("compileSdkVersion", 36)
+
+  defaultConfig {
+    minSdkVersion safeExt("minSdkVersion", 24)
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+  kotlinOptions {
+    jvmTarget = "17"
+  }
+}
+
+repositories {
+  google()
+  mavenCentral()
+}
+
+dependencies {
+  implementation "com.facebook.react:react-android"
+  implementation "androidx.webkit:webkit:1.12.1"
+}

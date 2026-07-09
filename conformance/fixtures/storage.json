@@ -1,0 +1,73 @@
+{
+  "name": "storage",
+  "manifest": { "permissions": ["storage"], "allowedDomains": [] },
+  "tests": [
+    {
+      "name": "set then get round-trips",
+      "steps": [
+        {
+          "call": {
+            "api": "storage.set",
+            "payload": { "key": "k", "value": "v" }
+          },
+          "expect": { "ok": true, "result": null }
+        },
+        {
+          "call": { "api": "storage.get", "payload": { "key": "k" } },
+          "expect": { "ok": true, "result": { "value": "v" } }
+        }
+      ]
+    },
+    {
+      "name": "missing key reads as null",
+      "steps": [
+        {
+          "call": { "api": "storage.get", "payload": { "key": "absent" } },
+          "expect": { "ok": true, "result": { "value": null } }
+        }
+      ]
+    },
+    {
+      "name": "remove deletes the key",
+      "steps": [
+        {
+          "call": {
+            "api": "storage.set",
+            "payload": { "key": "k", "value": "v" }
+          },
+          "expect": { "ok": true, "result": null }
+        },
+        {
+          "call": { "api": "storage.remove", "payload": { "key": "k" } },
+          "expect": { "ok": true, "result": null }
+        },
+        {
+          "call": { "api": "storage.get", "payload": { "key": "k" } },
+          "expect": { "ok": true, "result": { "value": null } }
+        }
+      ]
+    },
+    {
+      "name": "set without storage permission is denied",
+      "manifest": { "permissions": [], "allowedDomains": [] },
+      "steps": [
+        {
+          "call": {
+            "api": "storage.set",
+            "payload": { "key": "k", "value": "v" }
+          },
+          "expect": { "ok": false, "errorCode": "PERMISSION_DENIED" }
+        }
+      ]
+    },
+    {
+      "name": "set with missing value is INVALID_PAYLOAD",
+      "steps": [
+        {
+          "call": { "api": "storage.set", "payload": { "key": "k" } },
+          "expect": { "ok": false, "errorCode": "INVALID_PAYLOAD" }
+        }
+      ]
+    }
+  ]
+}
