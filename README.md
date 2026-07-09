@@ -109,10 +109,10 @@ model with every claim traced to its test; isolation and signing are on the
 
 ## Status
 
-Pre-release. The v0.1.0 release criteria are demonstrated end to end (bare RN
-and Expo hosts, iOS and Android, on-device conformance suite, tamper and OTA
-tests) — see [ROADMAP.md](ROADMAP.md) for phases, locked decisions, and what
-gets built only on real demand.
+**v0.1.0 is live on npm.** Its release criteria were demonstrated end to end
+before tagging (bare RN and Expo hosts, iOS and Android, on-device
+conformance suite, tamper and OTA tests) — see [ROADMAP.md](ROADMAP.md) for
+phases, locked decisions, and what gets built only on real demand.
 
 Works with React Native ≥ 0.76 (new architecture) and Expo SDK ≥ 54 via a
 [config plugin](packages/react-native/README.md#install--expo-dev-builds--prebuild).
