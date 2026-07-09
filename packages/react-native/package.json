@@ -50,5 +50,22 @@
     "@react-native-async-storage/async-storage": {
       "optional": true
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BoumouzounaBrahimVall/openmini.git",
+    "directory": "packages/react-native"
+  },
+  "homepage": "https://github.com/BoumouzounaBrahimVall/openmini#readme",
+  "bugs": "https://github.com/BoumouzounaBrahimVall/openmini/issues",
+  "keywords": [
+    "mini-apps",
+    "super-app",
+    "webview",
+    "micro-frontend",
+    "ota",
+    "react-native",
+    "expo",
+    "host-sdk"
+  ]
 }

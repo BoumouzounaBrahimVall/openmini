@@ -46,5 +46,21 @@
     "@aws-sdk/client-s3": {
       "optional": true
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BoumouzounaBrahimVall/openmini.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/BoumouzounaBrahimVall/openmini#readme",
+  "bugs": "https://github.com/BoumouzounaBrahimVall/openmini/issues",
+  "keywords": [
+    "mini-apps",
+    "super-app",
+    "webview",
+    "micro-frontend",
+    "ota",
+    "cli",
+    "static-registry"
+  ]
 }
