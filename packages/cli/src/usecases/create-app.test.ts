@@ -1,4 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { fileURLToPath } from "node:url";
+import { afterEach, describe, expect, it } from "vitest";
+import { nodeFs } from "../adapters/node/node-fs.js";
 import { parseManifest } from "./validate-manifest.js";
 import { createApp, type FileSystemPort } from "./create-app.js";
 
@@ -94,6 +98,15 @@ describe("mini create", () => {
     },
   );
 
+  it("replaces placeholders written with inner whitespace", () => {
+    const { fs, files } = memoryFs({
+      ...TEMPLATE,
+      "src/App.tsx": "<h1>{{ APP_NAME }}</h1>",
+    });
+    createApp({ name: "my-todo", cwd: "/apps", templateDir: "/tpl", fs });
+    expect(files.get("/apps/my-todo/src/App.tsx")).toBe("<h1>my-todo</h1>");
+  });
+
   it("refuses bad names and existing targets", () => {
     const { fs } = memoryFs(TEMPLATE);
     expect(() =>
@@ -103,5 +116,31 @@ describe("mini create", () => {
     expect(() =>
       createApp({ name: "todo", cwd: "/apps", templateDir: "/tpl", fs }),
     ).toThrow(/already exists/);
+  });
+});
+
+describe("mini create (real react template)", () => {
+  const cwd = mkdtempSync(nodeFs.join(tmpdir(), "openmini-create-"));
+  afterEach(() => rmSync(cwd, { recursive: true, force: true }));
+
+  it("scaffolds with no unreplaced {{ … }} placeholders", () => {
+    const templateDir = fileURLToPath(
+      new URL("../../templates/react", import.meta.url),
+    );
+    const { targetDir, files } = createApp({
+      name: "demo",
+      cwd,
+      templateDir,
+      fs: nodeFs,
+    });
+    for (const file of files) {
+      const content = nodeFs.readFile(nodeFs.join(targetDir, file));
+      expect(content, `${file} has an unreplaced placeholder`).not.toMatch(
+        /\{\{[^}]*\}\}/,
+      );
+    }
+    expect(nodeFs.readFile(nodeFs.join(targetDir, "src/App.tsx"))).toContain(
+      "<h1>demo</h1>",
+    );
   });
 });

@@ -54,11 +54,16 @@ export function createApp(options: CreateAppOptions): {
   const appId = `com.example.${name.replaceAll("-", "")}`;
   const written: string[] = [];
   for (const relative of fs.listFiles(templateDir)) {
+    // Tolerate inner whitespace ({{ APP_NAME }}) so a reformatted template
+    // can't ship an unreplaced placeholder into the scaffold.
     const content = fs
       .readFile(fs.join(templateDir, relative))
-      .replaceAll("{{APP_NAME}}", name)
-      .replaceAll("{{APP_ID}}", appId)
-      .replaceAll("{{OPENMINI_VERSION_RANGE}}", sdkVersionRange(sdkVersion));
+      .replaceAll(/\{\{\s*APP_NAME\s*\}\}/g, name)
+      .replaceAll(/\{\{\s*APP_ID\s*\}\}/g, appId)
+      .replaceAll(
+        /\{\{\s*OPENMINI_VERSION_RANGE\s*\}\}/g,
+        sdkVersionRange(sdkVersion),
+      );
     // npm strips .gitignore from published packages; templates store it renamed.
     const target = relative === "_gitignore" ? ".gitignore" : relative;
     const path = fs.join(targetDir, target);
