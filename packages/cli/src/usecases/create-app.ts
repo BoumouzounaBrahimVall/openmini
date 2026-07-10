@@ -34,6 +34,17 @@ function sdkVersionRange(sdkVersion: string | undefined): string {
   return `^${sdkVersion}`;
 }
 
+/**
+ * Git ref the scaffold's docs links point at (AGENTS.md), so agents read the
+ * specs matching the installed SDK, not whatever is on main. Unstamped dev
+ * builds fall back to main.
+ */
+function docsRef(sdkVersion: string | undefined): string {
+  if (sdkVersion === undefined || /^0\.0\.0(-|$)/.test(sdkVersion))
+    return "main";
+  return `v${sdkVersion}`;
+}
+
 /** Scaffolds a plain React + Vite mini-app from the template directory. */
 export function createApp(options: CreateAppOptions): {
   targetDir: string;
@@ -63,7 +74,8 @@ export function createApp(options: CreateAppOptions): {
       .replaceAll(
         /\{\{\s*OPENMINI_VERSION_RANGE\s*\}\}/g,
         sdkVersionRange(sdkVersion),
-      );
+      )
+      .replaceAll(/\{\{\s*OPENMINI_DOCS_REF\s*\}\}/g, docsRef(sdkVersion));
     // npm strips .gitignore from published packages; templates store it renamed.
     const target = relative === "_gitignore" ? ".gitignore" : relative;
     const path = fs.join(targetDir, target);
