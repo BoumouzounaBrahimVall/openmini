@@ -27,6 +27,7 @@ function memoryFs(template: Record<string, string>) {
 
 const TEMPLATE = {
   "manifest.json": `{"manifestVersion":1,"id":"{{APP_ID}}","name":"{{APP_NAME}}","version":"0.1.0","runtimeVersion":">=0.0.0"}`,
+  "package.json": `{"dependencies":{"@openmini/runtime":"{{OPENMINI_VERSION_RANGE}}"},"devDependencies":{"@openmini/cli":"{{OPENMINI_VERSION_RANGE}}"}}`,
   "src/App.tsx": "export const name = '{{APP_NAME}}';",
   _gitignore: "node_modules/",
 };
@@ -41,7 +42,12 @@ describe("mini create", () => {
       fs,
     });
     expect(targetDir).toBe("/apps/my-todo");
-    expect(written).toEqual([".gitignore", "manifest.json", "src/App.tsx"]);
+    expect(written).toEqual([
+      ".gitignore",
+      "manifest.json",
+      "package.json",
+      "src/App.tsx",
+    ]);
     const manifest = parseManifest(
       files.get("/apps/my-todo/manifest.json") ?? "",
     );
@@ -51,6 +57,32 @@ describe("mini create", () => {
     });
     expect(files.get("/apps/my-todo/src/App.tsx")).toContain("my-todo");
     expect(files.has("/apps/my-todo/.gitignore")).toBe(true);
+  });
+
+  it("stamps @openmini/* deps with the given version range", () => {
+    const { fs, files } = memoryFs(TEMPLATE);
+    createApp({
+      name: "todo",
+      cwd: "/apps",
+      templateDir: "/tpl",
+      fs,
+      sdkVersionRange: "^0.1.0",
+    });
+    const pkg = JSON.parse(files.get("/apps/todo/package.json") ?? "") as {
+      dependencies: Record<string, string>;
+      devDependencies: Record<string, string>;
+    };
+    expect(pkg.dependencies["@openmini/runtime"]).toBe("^0.1.0");
+    expect(pkg.devDependencies["@openmini/cli"]).toBe("^0.1.0");
+  });
+
+  it("defaults @openmini/* deps to the latest dist-tag", () => {
+    const { fs, files } = memoryFs(TEMPLATE);
+    createApp({ name: "todo", cwd: "/apps", templateDir: "/tpl", fs });
+    const pkg = JSON.parse(files.get("/apps/todo/package.json") ?? "") as {
+      dependencies: Record<string, string>;
+    };
+    expect(pkg.dependencies["@openmini/runtime"]).toBe("latest");
   });
 
   it("refuses bad names and existing targets", () => {

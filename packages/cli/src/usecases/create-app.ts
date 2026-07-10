@@ -19,6 +19,12 @@ export interface CreateAppOptions {
   cwd: string;
   templateDir: string;
   fs: FileSystemPort;
+  /**
+   * Semver range or dist-tag stamped into the scaffold's `@openmini/*`
+   * dependencies. Defaults to `latest` so a scaffold always installs even
+   * when the CLI's own version is unknown (unstamped dev builds).
+   */
+  sdkVersionRange?: string;
 }
 
 /** Scaffolds a plain React + Vite mini-app from the template directory. */
@@ -26,7 +32,7 @@ export function createApp(options: CreateAppOptions): {
   targetDir: string;
   files: string[];
 } {
-  const { name, cwd, templateDir, fs } = options;
+  const { name, cwd, templateDir, fs, sdkVersionRange = "latest" } = options;
   if (!NAME_PATTERN.test(name)) {
     throw new CliError(
       `invalid app name "${name}" — use lowercase letters, digits, and dashes (e.g. "todo")`,
@@ -44,7 +50,8 @@ export function createApp(options: CreateAppOptions): {
     const content = fs
       .readFile(fs.join(templateDir, relative))
       .replaceAll("{{APP_NAME}}", name)
-      .replaceAll("{{APP_ID}}", appId);
+      .replaceAll("{{APP_ID}}", appId)
+      .replaceAll("{{OPENMINI_VERSION_RANGE}}", sdkVersionRange);
     // npm strips .gitignore from published packages; templates store it renamed.
     const target = relative === "_gitignore" ? ".gitignore" : relative;
     const path = fs.join(targetDir, target);
