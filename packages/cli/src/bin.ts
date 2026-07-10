@@ -19,12 +19,36 @@ import { fsRegistryTarget } from "./adapters/node/fs-registry.js";
 import { s3RegistryTarget } from "./adapters/s3/s3-registry.js";
 import { OPENMINI_CLI_VERSION } from "./index.js";
 
+/**
+ * The version release CI stamps into package.json from the git tag — the
+ * source constant stays 0.0.0 because builds happen before stamping.
+ */
+function cliVersion(): string {
+  try {
+    const pkg = JSON.parse(
+      readFileSync(
+        fileURLToPath(new URL("../package.json", import.meta.url)),
+        "utf8",
+      ),
+    ) as { version?: string };
+    if (typeof pkg.version === "string") return pkg.version;
+  } catch {
+    // fall through
+  }
+  return OPENMINI_CLI_VERSION;
+}
+
+/** Unstamped dev builds (0.0.0) fall back to the latest published pair. */
+function sdkVersionRange(version: string): string {
+  return version === "0.0.0" ? "latest" : `^${version}`;
+}
+
 const program = new Command();
 
 program
   .name("mini")
   .description("OpenMini mini-app tooling")
-  .version(OPENMINI_CLI_VERSION);
+  .version(cliVersion());
 
 program
   .command("create")
@@ -39,6 +63,7 @@ program
       cwd: process.cwd(),
       templateDir,
       fs: nodeFs,
+      sdkVersionRange: sdkVersionRange(cliVersion()),
     });
     process.stdout.write(
       `Created ${targetDir} (${files.length} files)\n\nNext:\n  cd ${name}\n  npm install\n  npx mini dev\n`,
