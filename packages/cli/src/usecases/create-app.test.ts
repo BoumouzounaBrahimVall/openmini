@@ -33,6 +33,8 @@ const TEMPLATE = {
   "manifest.json": `{"manifestVersion":1,"id":"{{APP_ID}}","name":"{{APP_NAME}}","version":"0.1.0","runtimeVersion":">=0.0.0"}`,
   "package.json": `{"dependencies":{"@openmini/runtime":"{{OPENMINI_VERSION_RANGE}}"},"devDependencies":{"@openmini/cli":"{{OPENMINI_VERSION_RANGE}}"}}`,
   "src/App.tsx": "export const name = '{{APP_NAME}}';",
+  "AGENTS.md":
+    "Docs: https://example.com/repo/blob/{{OPENMINI_DOCS_REF}}/specs/bridge-protocol.md",
   _gitignore: "node_modules/",
 };
 
@@ -48,6 +50,7 @@ describe("mini create", () => {
     expect(targetDir).toBe("/apps/my-todo");
     expect(written).toEqual([
       ".gitignore",
+      "AGENTS.md",
       "manifest.json",
       "package.json",
       "src/App.tsx",
@@ -80,6 +83,18 @@ describe("mini create", () => {
     expect(pkg.devDependencies["@openmini/cli"]).toBe("^0.1.0");
   });
 
+  it("pins docs links to the v<sdkVersion> tag for stamped builds", () => {
+    const { fs, files } = memoryFs(TEMPLATE);
+    createApp({
+      name: "todo",
+      cwd: "/apps",
+      templateDir: "/tpl",
+      fs,
+      sdkVersion: "0.1.0",
+    });
+    expect(files.get("/apps/todo/AGENTS.md")).toContain("/blob/v0.1.0/");
+  });
+
   it.each([undefined, "0.0.0", "0.0.0-dev.1"])(
     "falls back to the latest dist-tag for unstamped builds (%s)",
     (sdkVersion) => {
@@ -95,6 +110,7 @@ describe("mini create", () => {
         dependencies: Record<string, string>;
       };
       expect(pkg.dependencies["@openmini/runtime"]).toBe("latest");
+      expect(files.get("/apps/todo/AGENTS.md")).toContain("/blob/main/");
     },
   );
 
@@ -142,5 +158,6 @@ describe("mini create (real react template)", () => {
     expect(nodeFs.readFile(nodeFs.join(targetDir, "src/App.tsx"))).toContain(
       "<h1>demo</h1>",
     );
+    expect(files).toContain("AGENTS.md");
   });
 });
