@@ -1,0 +1,42 @@
+name: Feature request
+description: Propose a new capability or improvement
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Heads up: the v0.1 bridge surface is frozen (6 built-in APIs + 3 host events
+        plus the `host.*` passthrough). Built-in additions are **spec changes first** —
+        see `specs/bridge-protocol.md`. Backlog items in `ROADMAP.md` are pull-gated:
+        describing your real-world need here is exactly the pull that un-gates them.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that OpenMini can't do today? Describe the use case, not the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How would you like it to work? CLI flags, API shape, spec change — whatever you have in mind.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds you've tried, including the `host.*` passthrough for host-defined APIs.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - CLI
+        - Runtime / bridge SDK
+        - React Native host SDK
+        - Registry protocol
+        - Specs
+        - New host adapter (Flutter, ...)
+        - Other
+    validations:
+      required: true

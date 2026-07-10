@@ -1,0 +1,54 @@
+name: Bug report
+description: Something in OpenMini doesn't work as documented
+labels: ["bug", "needs-triage"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of OpenMini is affected?
+      options:
+        - CLI (mini create/dev/build/pack/publish/inspect)
+        - Runtime (bridge client, mini.* SDK)
+        - React Native host SDK
+        - Registry protocol / publishing
+        - Specs
+        - Conformance suite
+        - Other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, what happened instead?
+      placeholder: |
+        1. Ran `mini create my-app`
+        2. Ran `npm install`
+        3. Got "No matching version found for ..."
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: Exact commands or a repo link. The faster we can reproduce, the faster it gets fixed.
+      render: shell
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions
+      description: Output of `mini --version`, plus Node, package manager, and OS. For host issues, add React Native / Expo versions.
+      placeholder: |
+        @openmini/cli: 0.1.0
+        node: 22.x
+        pnpm: 9.x
+        macOS 15 / Android 15 / iOS 18
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Error output, stack traces, or bridge messages. Redact anything private.
+      render: shell
