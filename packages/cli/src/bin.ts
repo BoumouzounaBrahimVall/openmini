@@ -38,11 +38,6 @@ function cliVersion(): string {
   return OPENMINI_CLI_VERSION;
 }
 
-/** Unstamped dev builds (0.0.0) fall back to the latest published pair. */
-function sdkVersionRange(version: string): string {
-  return version === "0.0.0" ? "latest" : `^${version}`;
-}
-
 const program = new Command();
 
 program
@@ -63,7 +58,7 @@ program
       cwd: process.cwd(),
       templateDir,
       fs: nodeFs,
-      sdkVersionRange: sdkVersionRange(cliVersion()),
+      sdkVersion: cliVersion(),
     });
     process.stdout.write(
       `Created ${targetDir} (${files.length} files)\n\nNext:\n  cd ${name}\n  npm install\n  npx mini dev\n`,
