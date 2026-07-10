@@ -59,14 +59,14 @@ describe("mini create", () => {
     expect(files.has("/apps/my-todo/.gitignore")).toBe(true);
   });
 
-  it("stamps @openmini/* deps with the given version range", () => {
+  it("stamps @openmini/* deps as ^<sdkVersion>", () => {
     const { fs, files } = memoryFs(TEMPLATE);
     createApp({
       name: "todo",
       cwd: "/apps",
       templateDir: "/tpl",
       fs,
-      sdkVersionRange: "^0.1.0",
+      sdkVersion: "0.1.0",
     });
     const pkg = JSON.parse(files.get("/apps/todo/package.json") ?? "") as {
       dependencies: Record<string, string>;
@@ -76,14 +76,23 @@ describe("mini create", () => {
     expect(pkg.devDependencies["@openmini/cli"]).toBe("^0.1.0");
   });
 
-  it("defaults @openmini/* deps to the latest dist-tag", () => {
-    const { fs, files } = memoryFs(TEMPLATE);
-    createApp({ name: "todo", cwd: "/apps", templateDir: "/tpl", fs });
-    const pkg = JSON.parse(files.get("/apps/todo/package.json") ?? "") as {
-      dependencies: Record<string, string>;
-    };
-    expect(pkg.dependencies["@openmini/runtime"]).toBe("latest");
-  });
+  it.each([undefined, "0.0.0", "0.0.0-dev.1"])(
+    "falls back to the latest dist-tag for unstamped builds (%s)",
+    (sdkVersion) => {
+      const { fs, files } = memoryFs(TEMPLATE);
+      createApp({
+        name: "todo",
+        cwd: "/apps",
+        templateDir: "/tpl",
+        fs,
+        sdkVersion,
+      });
+      const pkg = JSON.parse(files.get("/apps/todo/package.json") ?? "") as {
+        dependencies: Record<string, string>;
+      };
+      expect(pkg.dependencies["@openmini/runtime"]).toBe("latest");
+    },
+  );
 
   it("refuses bad names and existing targets", () => {
     const { fs } = memoryFs(TEMPLATE);
