@@ -71,6 +71,35 @@ Also not enforced today:
   versions in `<MiniAppView version>` where that matters.
 - **Rate limiting.**
 
+## OTA updates and app store policy
+
+Mini-apps are web content executed by the system WebView, which is the one
+form of remotely updated code both stores explicitly permit: Apple's App
+Review Guideline 2.5.2 exempts code run by WebKit/JavaScriptCore from the
+"no downloaded executable code" rule, and Google Play's Device and Network
+Abuse policy carves out code run in a WebView or interpreter. Distributing
+mini-app updates through your registry is therefore within policy — **as
+long as the updates themselves don't violate other policies**.
+
+What that means in practice:
+
+- **Bug fixes and content updates over the air: fine.** That's what the
+  mechanism is for.
+- **Shipping substantial new features or materially changing what your app
+  does, to avoid store review: don't.** Both stores reserve the right to
+  reject or remove apps whose remotely loaded content changes the app's
+  purpose or breaks other policies, regardless of the WebView exemption.
+  The technical permission is not a review bypass.
+
+OpenMini cannot enforce this — it's a policy obligation on you, the
+integrator. What the design gives you is the machinery to treat mini-app
+publishes like any other production release rather than a side channel:
+versions are immutable and `latest` is just a pointer
+([registry protocol](specs/registry-protocol.md)), so you can gate
+publishing behind your normal code review and CI, and roll back by pointing
+`latest` at the previous version. Pin exact versions in `<MiniAppView version>` where you need a
+host release and a mini-app version to ship together.
+
 ## Reporting a vulnerability
 
 Use **GitHub private vulnerability reporting**: this repository's
