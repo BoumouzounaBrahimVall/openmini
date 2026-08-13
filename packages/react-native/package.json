@@ -30,7 +30,7 @@
     "typescript": "^5.8.0",
     "@openmini/cli": "workspace:*",
     "@openmini/conformance": "workspace:*",
-    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-async-storage/async-storage": "^3.1.1",
     "@types/node": "^22.10.0",
     "react": "^19.2.8",
     "react-native": "^0.86.2",
