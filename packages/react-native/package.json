@@ -32,9 +32,9 @@
     "@openmini/conformance": "workspace:*",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@types/node": "^22.10.0",
-    "react": "^19.1.0",
-    "react-native": "^0.86.0",
-    "@types/react": "^19.1.0"
+    "react": "^19.2.8",
+    "react-native": "^0.86.2",
+    "@types/react": "^19.2.18"
   },
   "dependencies": {
     "@openmini/runtime": "workspace:*",
