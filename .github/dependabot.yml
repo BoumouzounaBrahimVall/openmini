@@ -1,0 +1,42 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      dev-tooling:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # Demo apps. Majors are pinned to the RN/Expo release train, so security and
+  # patch updates only.
+  - package-ecosystem: npm
+    directories:
+      - /apps/playground
+      - /apps/playground-expo
+      - /apps/spike
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      app-deps:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: bundler
+    directories:
+      - /apps/playground
+      - /apps/spike
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 2
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
