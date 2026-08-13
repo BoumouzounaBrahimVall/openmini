@@ -27,7 +27,7 @@ jobs:
       run:
         working-directory: apps/playground-expo
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -55,7 +55,7 @@ jobs:
       run:
         working-directory: apps/playground-expo
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       # Expo SDK 57's precompiled ExpoModulesJSI builds a Swift package that
       # needs Swift tools 6.2 — newer than the image's default Xcode. Pick
       # the newest installed Xcode and log the choice for future debugging.
