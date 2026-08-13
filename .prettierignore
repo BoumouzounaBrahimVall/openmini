@@ -9,3 +9,5 @@ packages/react-native/android/build/
 apps/playground-expo/android/
 apps/playground-expo/ios/
 apps/playground-expo/.expo/
+apps/playground/vendor/bundle/
+apps/spike/vendor/bundle/
