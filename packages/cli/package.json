@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@openmini/runtime": "workspace:*",
-    "@vitejs/plugin-react": "^4.5.0",
+    "@vitejs/plugin-react": "^6.0.5",
     "ajv": "^8.17.0",
     "commander": "^15.0.0",
     "vite": "^6.3.0",
