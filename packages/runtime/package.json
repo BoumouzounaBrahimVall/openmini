@@ -20,7 +20,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "devDependencies": {
-    "typescript": "^5.8.0",
+    "typescript": "^6.0.3",
     "@openmini/conformance": "workspace:*"
   },
   "repository": {
