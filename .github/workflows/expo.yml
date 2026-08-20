@@ -37,7 +37,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
       # AGP's on-demand NDK install flaked with a corrupt download ("Error on
       # ZipFile unknown archive"); sdkmanager verifies + retries properly.
       - name: Install Android NDK
