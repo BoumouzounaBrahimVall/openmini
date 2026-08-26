@@ -18,6 +18,8 @@
   },
   "files": [
     "dist",
+    "src",
+    "!src/**/*.test.ts",
     "android",
     "ios",
     "OpenminiReactNative.podspec",
