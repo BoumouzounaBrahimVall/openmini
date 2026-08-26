@@ -28,7 +28,7 @@ jobs:
         working-directory: apps/playground-expo
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -67,7 +67,7 @@ jobs:
           echo "selecting $XC"
           sudo xcode-select -s "/Applications/$XC"
           swift --version
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
