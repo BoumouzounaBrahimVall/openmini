@@ -28,7 +28,7 @@
   "devDependencies": {
     "typescript": "^6.0.3",
     "@openmini/conformance": "workspace:*",
-    "@aws-sdk/client-s3": "^3.1107.0"
+    "@aws-sdk/client-s3": "^3.1121.0"
   },
   "dependencies": {
     "@openmini/runtime": "workspace:*",
