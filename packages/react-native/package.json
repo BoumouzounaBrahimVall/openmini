@@ -33,15 +33,15 @@
     "@openmini/cli": "workspace:*",
     "@openmini/conformance": "workspace:*",
     "@react-native-async-storage/async-storage": "^3.1.1",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.4.0",
     "react": "^19.2.8",
-    "react-native": "^0.86.2",
+    "react-native": "^0.87.1",
     "@types/react": "^19.2.18"
   },
   "dependencies": {
     "@openmini/runtime": "workspace:*",
     "fflate": "^0.8.2",
-    "zod": "^4.1.0"
+    "zod": "^4.5.4"
   },
   "peerDependencies": {
     "@react-native-async-storage/async-storage": ">=1.19",
